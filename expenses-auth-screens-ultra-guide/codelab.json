@@ -1,0 +1,30 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-05-04T11:07:35Z",
+  "id": "expenses-auth-screens-ultra-guide",
+  "duration": 128,
+  "title": "Flutter debutant - Connexion / Inscription (version ultra guidee)",
+  "authors": "Formateur",
+  "summary": "Flutter debutant - Codelab ultra guide (auth)",
+  "source": "docs/codelabs/codelab_auth_screens.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "flutter",
+    "mobile",
+    "ui"
+  ],
+  "tags": [
+    "debutant",
+    "flutter",
+    "formulaire",
+    "navigation",
+    "screenutil"
+  ],
+  "url": "expenses-auth-screens-ultra-guide"
+}
