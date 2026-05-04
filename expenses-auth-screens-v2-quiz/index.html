@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>Flutter debutant - Connexion / Inscription (V2 &#43; mini quiz)</title>
+  <title>Flutter debutant - Connexion / Inscription (V2 ultra guidee &#43; quiz)</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -24,25 +24,40 @@
   <google-codelab codelab-gaid=""
                   codelab-ga4id=""
                   id="expenses-auth-screens-v2-quiz"
-                  title="Flutter debutant - Connexion / Inscription (V2 &#43; mini quiz)"
+                  title="Flutter debutant - Connexion / Inscription (V2 ultra guidee &#43; quiz)"
                   environment="web"
                   feedback-link="">
     
       <google-codelab-step label="Introduction" duration="3">
-        <p>Cette V2 ajoute des mini quiz pour verifier la comprehension apres chaque bloc important.</p>
+        <p>Objectif:</p>
+<ul>
+<li>Construire 2 ecrans (<code>Connexion</code> et <code>Inscription</code>) pas a pas.</li>
+<li>Comprendre la syntaxe Flutter grace aux <strong>commentaires dans le code</strong>.</li>
+<li>Verifier la comprehension avec des mini quiz.</li>
+</ul>
+<p>Regle de travail:</p>
+<ul>
+<li>1 bloc de code a la fois</li>
+<li>1 verification a la fois</li>
+</ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Etape 1 - Setup projet" duration="5">
-        <pre><code language="language-bash" class="language-bash">flutter create expenses_management_project
+        <h2 is-upgraded>Action</h2>
+<pre><code language="language-bash" class="language-bash">flutter create expenses_management_project
 cd expenses_management_project
 flutter pub add flutter_screenutil
 </code></pre>
-<p>Mini quiz:</p>
+<h2 is-upgraded>Verification</h2>
 <ul>
-<li>Q1: Quel fichier liste les dependances Flutter ?</li>
-<li>Q2: Pourquoi ajouter <code>flutter_screenutil</code> ?</li>
+<li>Le projet compile avec <code>flutter run</code>.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Quel fichier contient les dependances ?</li>
+<li>Q2: Pourquoi on ajoute <code>flutter_screenutil</code> ?</li>
 </ul>
 
 
@@ -50,20 +65,27 @@ flutter pub add flutter_screenutil
     
       <google-codelab-step label="Etape 2 - Initialiser ScreenUtil dans 
 main.dart" duration="10">
-        <pre><code language="language-dart" class="language-dart">import &#39;package:expenses_management_project/authentification/page_de_connexion.dart&#39;;
+        <h2 is-upgraded>Action</h2>
+<p>Remplace <code>lib/main.dart</code> par ce code <strong>commente</strong>:</p>
+<pre><code language="language-dart" class="language-dart">import &#39;package:expenses_management_project/authentification/page_de_connexion.dart&#39;;
 import &#39;package:flutter/material.dart&#39;;
 import &#39;package:flutter_screenutil/flutter_screenutil.dart&#39;;
 
+// Point d&#39;entree de l&#39;application.
 void main() {
+  // Lance le widget racine.
   runApp(const ExpensesTrainingApp());
 }
 
+// Widget racine (pas d&#39;etat local ici).
 class ExpensesTrainingApp extends StatelessWidget {
   const ExpensesTrainingApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // ScreenUtilInit: initialise le responsive UNE seule fois pour toute l&#39;app.
     return ScreenUtilInit(
+      // Taille de reference utilisee pour calculer .w / .h / .sp / .r.
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
@@ -74,146 +96,517 @@ class ExpensesTrainingApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
           useMaterial3: true,
         ),
+        // Premier ecran affiche.
         home: const PageDeConnexion(),
       ),
     );
   }
 }
 </code></pre>
-<p>Mini quiz:</p>
+<h2 is-upgraded>Verification</h2>
 <ul>
-<li>Q1: Pourquoi <code>ScreenUtilInit</code> se met dans <code>main.dart</code> et pas dans chaque page ?</li>
+<li><code>main.dart</code> compile.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>ScreenUtilInit</code> dans <code>main.dart</code> ?</li>
 <li>Q2: A quoi sert <code>designSize</code> ?</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Etape 3 - Page Connexion (structure)" duration="12">
-        <p>Creer <code>lib/authentification/page_de_connexion.dart</code> avec un <code>StatefulWidget</code>, deux <code>TextEditingController</code>, et <code>dispose()</code>.</p>
-<p>Mini quiz:</p>
+      <google-codelab-step label="Etape 3 - Creer le squelette de Connexion" duration="12">
+        <h2 is-upgraded>Action</h2>
+<p>Cree <code>lib/authentification/page_de_connexion.dart</code>:</p>
+<pre><code language="language-dart" class="language-dart">import &#39;package:expenses_management_project/authentification/page_inscription.dart&#39;;
+import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_screenutil/flutter_screenutil.dart&#39;;
+
+// StatefulWidget: on a des valeurs qui changent (checkbox, oeil mot de passe).
+class PageDeConnexion extends StatefulWidget {
+  const PageDeConnexion({super.key});
+
+  @override
+  State&lt;PageDeConnexion&gt; createState() =&gt; _PageDeConnexionState();
+}
+
+class _PageDeConnexionState extends State&lt;PageDeConnexion&gt; {
+  // Controllers: recuperent le texte saisi dans les champs.
+  final TextEditingController _telephoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Etats locaux de la page.
+  bool _rememberMe = false;
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    // Important: liberer les controllers pour eviter les fuites memoire.
+    _telephoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          &#39;Connexion&#39;,
+          style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w700),
+        ),
+        centerTitle: true,
+      ),
+      body: const Center(child: Text(&#39;Etape suivante: contenu de la page&#39;)),
+    );
+  }
+}
+</code></pre>
+<h2 is-upgraded>Verification</h2>
 <ul>
-<li>Q1: Pourquoi ici <code>StatefulWidget</code> est mieux que <code>StatelessWidget</code> ?</li>
-<li>Q2: Pourquoi appeler <code>dispose()</code> sur les controllers ?</li>
+<li>L&#39;ecran affiche &#34;Connexion&#34;.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>StatefulWidget</code> ?</li>
+<li>Q2: Pourquoi appeler <code>dispose()</code> ?</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Etape 4 - Page Connexion (UI bloc par bloc)" duration="18">
-        <p>Ajouter progressivement:</p>
-<ol type="1">
-<li>Entete (avatar, titre, sous-titre)</li>
-<li>Formulaire (telephone, mot de passe, checkbox)</li>
-<li>Bouton principal</li>
-<li>Boutons sociaux</li>
-<li>Lien vers inscription</li>
-</ol>
-<p>Snippet cle pour l&#39;oeil du mot de passe:</p>
-<pre><code language="language-dart" class="language-dart">TextFormField(
-  controller: _passwordController,
-  obscureText: _obscurePassword,
-  decoration: InputDecoration(
-    suffixIcon: IconButton(
-      onPressed: () =&gt; setState(() =&gt; _obscurePassword = !_obscurePassword),
-      icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+      <google-codelab-step label="Etape 4 - Bloc entete Connexion" duration="10">
+        <h2 is-upgraded>Action</h2>
+<p>Dans <code>build</code>, remplace <code>body</code> par ce premier bloc:</p>
+<pre><code language="language-dart" class="language-dart">body: Container(
+  // Fond degrade simple.
+  decoration: const BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: &lt;Color&gt;[Color(0xFFF3F7FF), Color(0xFFFFFFFF)],
     ),
   ),
-)
+  // ListView pour autoriser le scroll sur petits ecrans.
+  child: ListView(
+    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+    children: &lt;Widget&gt;[
+      Center(
+        child: CircleAvatar(
+          radius: 38.r,
+          backgroundColor: Colors.indigo.shade50,
+          child: Icon(Icons.account_balance_wallet_rounded, size: 36.sp, color: Colors.indigo),
+        ),
+      ),
+      SizedBox(height: 16.h),
+      Center(child: Text(&#39;Bienvenue&#39;, style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.w700))),
+      SizedBox(height: 6.h),
+      Center(
+        child: Text(
+          &#39;Connectez-vous a votre compte&#39;,
+          style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
+        ),
+      ),
+      SizedBox(height: 24.h),
+      // Formulaire a ajouter a l&#39;etape suivante.
+    ],
+  ),
+),
 </code></pre>
-<p>Mini quiz:</p>
+<h2 is-upgraded>Verification</h2>
 <ul>
-<li>Q1: Quel est le role de <code>setState()</code> dans ce bloc ?</li>
-<li>Q2: Pourquoi <code>ListView</code> plutot que <code>Column</code> ?</li>
+<li>Avatar + titre + sous-titre visibles.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>ListView</code> et pas <code>Column</code> ?</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Etape 5 - Page Inscription (structure)" duration="12">
-        <p>Creer <code>lib/authentification/page_inscription.dart</code> avec:</p>
+      <google-codelab-step label="Etape 5 - Bloc formulaire Connexion" duration="18">
+        <h2 is-upgraded>Action</h2>
+<p>Ajoute ce bloc a la place du commentaire:</p>
+<pre><code language="language-dart" class="language-dart">Container(
+  padding: EdgeInsets.all(16.w),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16.r),
+    boxShadow: &lt;BoxShadow&gt;[
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.06),
+        blurRadius: 16.r,
+        offset: Offset(0, 6.h),
+      ),
+    ],
+  ),
+  child: Column(
+    children: &lt;Widget&gt;[
+      // Champ telephone.
+      TextFormField(
+        controller: _telephoneController,
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          labelText: &#39;Telephone&#39;,
+          hintText: &#39;Ex: 0600000000&#39;,
+          prefixIcon: const Icon(Icons.phone_outlined),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14.r)),
+        ),
+      ),
+      SizedBox(height: 12.h),
+
+      // Champ mot de passe avec bouton oeil.
+      TextFormField(
+        controller: _passwordController,
+        obscureText: _obscurePassword,
+        decoration: InputDecoration(
+          labelText: &#39;Mot de passe&#39;,
+          hintText: &#39;********&#39;,
+          prefixIcon: const Icon(Icons.lock_outline_rounded),
+          suffixIcon: IconButton(
+            onPressed: () {
+              // setState: redessine l&#39;UI avec la nouvelle valeur.
+              setState(() =&gt; _obscurePassword = !_obscurePassword);
+            },
+            icon: Icon(
+              _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            ),
+          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14.r)),
+        ),
+      ),
+      SizedBox(height: 8.h),
+
+      // Checkbox + lien mot de passe oublie.
+      Row(
+        children: &lt;Widget&gt;[
+          Checkbox(
+            value: _rememberMe,
+            onChanged: (bool? value) {
+              setState(() =&gt; _rememberMe = value ?? false);
+            },
+          ),
+          Expanded(child: Text(&#39;Se souvenir de moi&#39;, style: TextStyle(fontSize: 13.sp))),
+          TextButton(onPressed: () {}, child: Text(&#39;Mot de passe oublie ?&#39;, style: TextStyle(fontSize: 13.sp))),
+        ],
+      ),
+      SizedBox(height: 4.h),
+
+      // Bouton principal.
+      SizedBox(
+        width: double.infinity,
+        height: 50.h,
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.indigo,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+          ),
+          child: Text(&#39;Connexion&#39;, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
+        ),
+      ),
+    ],
+  ),
+),
+</code></pre>
+<h2 is-upgraded>Verification</h2>
 <ul>
-<li>controllers: nom, prenom, telephone, mot de passe</li>
-<li>etat: <code>_obscurePassword</code></li>
-<li><code>dispose()</code></li>
+<li>L&#39;icone oeil affiche/masque le mot de passe.</li>
+<li>La checkbox change bien d&#39;etat.</li>
 </ul>
-<p>Mini quiz:</p>
+<h2 is-upgraded>Mini quiz</h2>
 <ul>
-<li>Q1: Quel champ necessite <code>keyboardType: TextInputType.phone</code> ?</li>
-<li>Q2: Pourquoi stocker <code>_obscurePassword</code> dans un bool ?</li>
+<li>Q1: Quel widget declenche le changement visuel de l&#39;oeil ?</li>
+<li>Q2: Pourquoi <code>Expanded</code> autour du texte checkbox ?</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Etape 6 - Page Inscription (UI bloc par bloc)" duration="20">
-        <p>Ajouter progressivement:</p>
-<ol type="1">
-<li>Entete</li>
-<li>Formulaire (nom/prenom en <code>Row</code> + <code>Expanded</code>)</li>
-<li>Telephone</li>
-<li>Mot de passe + oeil</li>
-<li>Bouton inscription</li>
-<li>Lien retour connexion</li>
-</ol>
-<p>Snippet cle pour <code>Expanded</code>:</p>
-<pre><code language="language-dart" class="language-dart">Row(
+      <google-codelab-step label="Etape 6 - Bas de page &#43; navigation vers Inscription" duration="10">
+        <h2 is-upgraded>Action</h2>
+<p>Ajoute apres le formulaire:</p>
+<pre><code language="language-dart" class="language-dart">SizedBox(height: 18.h),
+Row(
   children: &lt;Widget&gt;[
-    Expanded(child: TextFormField(...)),
-    SizedBox(width: 10.w),
-    Expanded(child: TextFormField(...)),
+    const Expanded(child: Divider()),
+    Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: Text(&#39;Ou continuer avec&#39;, style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600)),
+    ),
+    const Expanded(child: Divider()),
   ],
-)
+),
+SizedBox(height: 14.h),
+Row(
+  children: &lt;Widget&gt;[
+    Expanded(child: OutlinedButton.icon(onPressed: () {}, icon: Icon(Icons.facebook, size: 18.sp), label: Text(&#39;Facebook&#39;, style: TextStyle(fontSize: 13.sp)))),
+    SizedBox(width: 12.w),
+    Expanded(child: OutlinedButton.icon(onPressed: () {}, icon: Icon(Icons.g_mobiledata_rounded, size: 22.sp), label: Text(&#39;Google&#39;, style: TextStyle(fontSize: 13.sp)))),
+  ],
+),
+SizedBox(height: 18.h),
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: &lt;Widget&gt;[
+    Text(&#34;Vous n&#39;avez pas de compte ? &#34;, style: TextStyle(fontSize: 13.sp)),
+    GestureDetector(
+      onTap: () {
+        // pushReplacement: remplace la page actuelle dans la pile de navigation.
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute&lt;void&gt;(builder: (BuildContext context) =&gt; const PageInscription()),
+        );
+      },
+      child: Text(&#39;Inscrivez-vous&#39;, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: Colors.indigo)),
+    ),
+  ],
+),
 </code></pre>
-<p>Mini quiz:</p>
+<h2 is-upgraded>Verification</h2>
 <ul>
-<li>Q1: Que se passe-t-il si on enleve <code>Expanded</code> autour des <code>TextFormField</code> dans un <code>Row</code> ?</li>
-<li>Q2: Pourquoi <code>pushReplacement</code> pour naviguer entre Connexion/Inscription ?</li>
+<li>Le lien &#34;Inscrivez-vous&#34; ouvre la page inscription (quand elle existera).</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Difference entre <code>push</code> et <code>pushReplacement</code> ?</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Etape 7 - Verification finale" duration="8">
+      <google-codelab-step label="Etape 7 - Creer la structure de la page Inscription" duration="12">
+        <h2 is-upgraded>Action</h2>
+<p>Cree <code>lib/authentification/page_inscription.dart</code> et colle ce code commente:</p>
+<pre><code language="language-dart" class="language-dart">import &#39;package:expenses_management_project/authentification/page_de_connexion.dart&#39;;
+import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_screenutil/flutter_screenutil.dart&#39;;
+
+class PageInscription extends StatefulWidget {
+  const PageInscription({super.key});
+
+  @override
+  State&lt;PageInscription&gt; createState() =&gt; _PageInscriptionState();
+}
+
+class _PageInscriptionState extends State&lt;PageInscription&gt; {
+  // Controllers pour chaque champ.
+  final TextEditingController _nomController = TextEditingController();
+  final TextEditingController _prenomController = TextEditingController();
+  final TextEditingController _telephoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _nomController.dispose();
+    _prenomController.dispose();
+    _telephoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(&#39;Inscription&#39;, style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w700)),
+        centerTitle: true,
+      ),
+      body: const Center(child: Text(&#39;Etape suivante: contenu de la page&#39;)),
+    );
+  }
+}
+</code></pre>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi 4 controllers ici ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 8 - Bloc formulaire Inscription" duration="20">
+        <h2 is-upgraded>Action</h2>
+<p>Remplace <code>body</code> par:</p>
+<pre><code language="language-dart" class="language-dart">body: Container(
+  decoration: const BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: &lt;Color&gt;[Color(0xFFF3F7FF), Color(0xFFFFFFFF)],
+    ),
+  ),
+  child: ListView(
+    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+    children: &lt;Widget&gt;[
+      Center(child: CircleAvatar(radius: 38.r, backgroundColor: Colors.indigo.shade50, child: Icon(Icons.app_registration_rounded, size: 34.sp, color: Colors.indigo))),
+      SizedBox(height: 16.h),
+      Center(child: Text(&#39;Creer un compte&#39;, style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.w700))),
+      SizedBox(height: 6.h),
+      Center(child: Text(&#39;Rejoignez votre espace de gestion des depenses&#39;, style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700))),
+      SizedBox(height: 24.h),
+      Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          boxShadow: &lt;BoxShadow&gt;[BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 16.r, offset: Offset(0, 6.h))],
+        ),
+        child: Column(
+          children: &lt;Widget&gt;[
+            // Ligne Nom/Prenom.
+            Row(
+              children: &lt;Widget&gt;[
+                Expanded(
+                  child: TextFormField(
+                    controller: _nomController,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      labelText: &#39;Nom&#39;,
+                      prefixIcon: const Icon(Icons.person_outline),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14.r)),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: TextFormField(
+                    controller: _prenomController,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      labelText: &#39;Prenom&#39;,
+                      prefixIcon: const Icon(Icons.person_2_outlined),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14.r)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            TextFormField(
+              controller: _telephoneController,
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: &#39;Telephone&#39;,
+                hintText: &#39;Ex: 0600000000&#39;,
+                prefixIcon: const Icon(Icons.phone_outlined),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(14.r)),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: _obscurePassword,
+              decoration: InputDecoration(
+                labelText: &#39;Mot de passe&#39;,
+                hintText: &#39;Au moins 6 caracteres&#39;,
+                prefixIcon: const Icon(Icons.lock_outline_rounded),
+                suffixIcon: IconButton(
+                  onPressed: () =&gt; setState(() =&gt; _obscurePassword = !_obscurePassword),
+                  icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(14.r)),
+              ),
+            ),
+            SizedBox(height: 16.h),
+            SizedBox(
+              width: double.infinity,
+              height: 50.h,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.indigo,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+                ),
+                child: Text(&#34;S&#39;inscrire&#34;, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+),
+</code></pre>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi utiliser <code>Expanded</code> dans la <code>Row</code> Nom/Prenom ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 9 - Lien retour vers Connexion" duration="8">
+        <h2 is-upgraded>Action</h2>
+<p>Ajoute en bas de la <code>ListView</code> inscription:</p>
+<pre><code language="language-dart" class="language-dart">SizedBox(height: 18.h),
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: &lt;Widget&gt;[
+    Text(&#39;Vous avez deja un compte ? &#39;, style: TextStyle(fontSize: 13.sp)),
+    GestureDetector(
+      onTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute&lt;void&gt;(builder: (BuildContext context) =&gt; const PageDeConnexion()),
+        );
+      },
+      child: Text(&#39;Connectez-vous&#39;, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700, color: Colors.indigo)),
+    ),
+  ],
+),
+</code></pre>
+<h2 is-upgraded>Verification</h2>
+<ul>
+<li>Navigation Inscription -&gt; Connexion OK.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi ce texte est cliquable avec <code>GestureDetector</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 10 - Validation finale" duration="6">
         <pre><code language="language-bash" class="language-bash">flutter analyze
 flutter run
 </code></pre>
 <p>Checklist:</p>
 <ul>
 <li>[ ] Connexion s&#39;affiche au demarrage</li>
-<li>[ ] L&#39;oeil du mot de passe fonctionne sur les 2 pages</li>
+<li>[ ] Oeil mot de passe fonctionne sur les 2 pages</li>
 <li>[ ] Navigation Connexion &lt;-&gt; Inscription OK</li>
-<li>[ ] Aucun overflow visible</li>
-</ul>
-<p>Mini quiz final (recap):</p>
-<ul>
-<li>Q1: Cite 3 widgets de structure utilises dans ces pages.</li>
-<li>Q2: Cite 2 elements d&#39;etat geres avec <code>setState</code>.</li>
-<li>Q3: Pourquoi <code>ScreenUtilInit</code> est place a la racine ?</li>
+<li>[ ] Pas de bug de layout visible</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Corrige rapide (formateur)" duration="2">
+      <google-codelab-step label="Quiz recap (formateur)" duration="4">
         <ul>
-<li>Q typiques: <ul>
-<li><code>ScreenUtilInit</code> a la racine -&gt; config unique pour toute l&#39;app.</li>
-<li><code>setState</code> -&gt; redessiner l&#39;UI quand un etat change.</li>
-<li><code>Expanded</code> dans <code>Row</code> -&gt; donner une largeur bornee aux champs.</li>
-<li><code>dispose</code> -&gt; liberer les ressources des controllers.</li>
-</ul>
-</li>
+<li>Q1: Cite 3 widgets de structure utilises</li>
+<li>Q2: Cite 2 etats geres avec <code>setState</code></li>
+<li>Q3: Pourquoi <code>dispose()</code> est important</li>
+<li>Q4: Pourquoi <code>ScreenUtilInit</code> a la racine</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Bonus V2" duration="5">
-        <p>Ajoute un mini score oral:</p>
-<ul>
-<li>+1 point par bonne reponse (10 points total).</li>
-<li>Objectif eleve: 7/10 minimum avant la suite (gestion des depenses).</li>
+      <google-codelab-step label="Corrige express" duration="2">
+        <ul>
+<li><code>ScreenUtilInit</code> a la racine: config unique.</li>
+<li><code>setState</code>: redessine l&#39;interface.</li>
+<li><code>dispose</code>: libere les controllers.</li>
+<li><code>Expanded</code> dans <code>Row</code>: evite largeur infinie pour les champs.</li>
 </ul>
 
 

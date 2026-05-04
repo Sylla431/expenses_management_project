@@ -3,12 +3,12 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2026-05-04T11:47:12Z",
+  "updated": "2026-05-04T14:08:20Z",
   "id": "expenses-auth-screens-v2-quiz",
-  "duration": 95,
-  "title": "Flutter debutant - Connexion / Inscription (V2 + mini quiz)",
+  "duration": 120,
+  "title": "Flutter debutant - Connexion / Inscription (V2 ultra guidee + quiz)",
   "authors": "Formateur",
-  "summary": "Flutter debutant - Codelab V2 avec quiz",
+  "summary": "Flutter debutant - Codelab V2 ultra guide + quiz",
   "source": "docs/codelabs/codelab_auth_screens_v2.md",
   "theme": "",
   "status": [
@@ -20,6 +20,7 @@
     "ui"
   ],
   "tags": [
+    "debutant",
     "flutter",
     "formulaire",
     "navigation",
