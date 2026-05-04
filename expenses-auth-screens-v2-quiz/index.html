@@ -1,0 +1,231 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Flutter debutant - Connexion / Inscription (V2 &#43; mini quiz)</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="expenses-auth-screens-v2-quiz"
+                  title="Flutter debutant - Connexion / Inscription (V2 &#43; mini quiz)"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Introduction" duration="3">
+        <p>Cette V2 ajoute des mini quiz pour verifier la comprehension apres chaque bloc important.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 1 - Setup projet" duration="5">
+        <pre><code language="language-bash" class="language-bash">flutter create expenses_management_project
+cd expenses_management_project
+flutter pub add flutter_screenutil
+</code></pre>
+<p>Mini quiz:</p>
+<ul>
+<li>Q1: Quel fichier liste les dependances Flutter ?</li>
+<li>Q2: Pourquoi ajouter <code>flutter_screenutil</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 2 - Initialiser ScreenUtil dans 
+main.dart" duration="10">
+        <pre><code language="language-dart" class="language-dart">import &#39;package:expenses_management_project/authentification/page_de_connexion.dart&#39;;
+import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_screenutil/flutter_screenutil.dart&#39;;
+
+void main() {
+  runApp(const ExpensesTrainingApp());
+}
+
+class ExpensesTrainingApp extends StatelessWidget {
+  const ExpensesTrainingApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: const Size(390, 844),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, __) =&gt; MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: &#39;Expense Tracker - Debutant&#39;,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          useMaterial3: true,
+        ),
+        home: const PageDeConnexion(),
+      ),
+    );
+  }
+}
+</code></pre>
+<p>Mini quiz:</p>
+<ul>
+<li>Q1: Pourquoi <code>ScreenUtilInit</code> se met dans <code>main.dart</code> et pas dans chaque page ?</li>
+<li>Q2: A quoi sert <code>designSize</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 3 - Page Connexion (structure)" duration="12">
+        <p>Creer <code>lib/authentification/page_de_connexion.dart</code> avec un <code>StatefulWidget</code>, deux <code>TextEditingController</code>, et <code>dispose()</code>.</p>
+<p>Mini quiz:</p>
+<ul>
+<li>Q1: Pourquoi ici <code>StatefulWidget</code> est mieux que <code>StatelessWidget</code> ?</li>
+<li>Q2: Pourquoi appeler <code>dispose()</code> sur les controllers ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 4 - Page Connexion (UI bloc par bloc)" duration="18">
+        <p>Ajouter progressivement:</p>
+<ol type="1">
+<li>Entete (avatar, titre, sous-titre)</li>
+<li>Formulaire (telephone, mot de passe, checkbox)</li>
+<li>Bouton principal</li>
+<li>Boutons sociaux</li>
+<li>Lien vers inscription</li>
+</ol>
+<p>Snippet cle pour l&#39;oeil du mot de passe:</p>
+<pre><code language="language-dart" class="language-dart">TextFormField(
+  controller: _passwordController,
+  obscureText: _obscurePassword,
+  decoration: InputDecoration(
+    suffixIcon: IconButton(
+      onPressed: () =&gt; setState(() =&gt; _obscurePassword = !_obscurePassword),
+      icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+    ),
+  ),
+)
+</code></pre>
+<p>Mini quiz:</p>
+<ul>
+<li>Q1: Quel est le role de <code>setState()</code> dans ce bloc ?</li>
+<li>Q2: Pourquoi <code>ListView</code> plutot que <code>Column</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 5 - Page Inscription (structure)" duration="12">
+        <p>Creer <code>lib/authentification/page_inscription.dart</code> avec:</p>
+<ul>
+<li>controllers: nom, prenom, telephone, mot de passe</li>
+<li>etat: <code>_obscurePassword</code></li>
+<li><code>dispose()</code></li>
+</ul>
+<p>Mini quiz:</p>
+<ul>
+<li>Q1: Quel champ necessite <code>keyboardType: TextInputType.phone</code> ?</li>
+<li>Q2: Pourquoi stocker <code>_obscurePassword</code> dans un bool ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 6 - Page Inscription (UI bloc par bloc)" duration="20">
+        <p>Ajouter progressivement:</p>
+<ol type="1">
+<li>Entete</li>
+<li>Formulaire (nom/prenom en <code>Row</code> + <code>Expanded</code>)</li>
+<li>Telephone</li>
+<li>Mot de passe + oeil</li>
+<li>Bouton inscription</li>
+<li>Lien retour connexion</li>
+</ol>
+<p>Snippet cle pour <code>Expanded</code>:</p>
+<pre><code language="language-dart" class="language-dart">Row(
+  children: &lt;Widget&gt;[
+    Expanded(child: TextFormField(...)),
+    SizedBox(width: 10.w),
+    Expanded(child: TextFormField(...)),
+  ],
+)
+</code></pre>
+<p>Mini quiz:</p>
+<ul>
+<li>Q1: Que se passe-t-il si on enleve <code>Expanded</code> autour des <code>TextFormField</code> dans un <code>Row</code> ?</li>
+<li>Q2: Pourquoi <code>pushReplacement</code> pour naviguer entre Connexion/Inscription ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 7 - Verification finale" duration="8">
+        <pre><code language="language-bash" class="language-bash">flutter analyze
+flutter run
+</code></pre>
+<p>Checklist:</p>
+<ul>
+<li>[ ] Connexion s&#39;affiche au demarrage</li>
+<li>[ ] L&#39;oeil du mot de passe fonctionne sur les 2 pages</li>
+<li>[ ] Navigation Connexion &lt;-&gt; Inscription OK</li>
+<li>[ ] Aucun overflow visible</li>
+</ul>
+<p>Mini quiz final (recap):</p>
+<ul>
+<li>Q1: Cite 3 widgets de structure utilises dans ces pages.</li>
+<li>Q2: Cite 2 elements d&#39;etat geres avec <code>setState</code>.</li>
+<li>Q3: Pourquoi <code>ScreenUtilInit</code> est place a la racine ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Corrige rapide (formateur)" duration="2">
+        <ul>
+<li>Q typiques: <ul>
+<li><code>ScreenUtilInit</code> a la racine -&gt; config unique pour toute l&#39;app.</li>
+<li><code>setState</code> -&gt; redessiner l&#39;UI quand un etat change.</li>
+<li><code>Expanded</code> dans <code>Row</code> -&gt; donner une largeur bornee aux champs.</li>
+<li><code>dispose</code> -&gt; liberer les ressources des controllers.</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bonus V2" duration="5">
+        <p>Ajoute un mini score oral:</p>
+<ul>
+<li>+1 point par bonne reponse (10 points total).</li>
+<li>Objectif eleve: 7/10 minimum avant la suite (gestion des depenses).</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
