@@ -9,6 +9,7 @@ Ce projet sert de support de formation Flutter pour debutant, avec une progressi
 - Checklist d'evaluation finale: `docs/final_evaluation_checklist.md`
 - Slides (widgets/classes): `docs/slides_widgets_classes.md`
 - Codelab (Google format Markdown / `claat`): `docs/codelabs/codelab_auth_screens.md`
+- Codelab V2 (ultra guide + mini quiz): `docs/codelabs/codelab_auth_screens_v2.md`
 
 ## Comment utiliser ce projet en formation
 
