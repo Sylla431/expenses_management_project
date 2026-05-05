@@ -1,4 +1,5 @@
 import 'package:expenses_management_project/authentification/page_inscription.dart';
+import 'package:expenses_management_project/accueil/page_accueil_depenses.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -174,7 +175,16 @@ class _PageDeConnexionState extends State<PageDeConnexion> {
                     width: double.infinity,
                     height: 50.h,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // Pour la seance: on ouvre directement la page d'accueil.
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                const PageAccueilDepenses(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.indigo,
                         foregroundColor: Colors.white,

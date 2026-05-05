@@ -1,0 +1,371 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Flutter debutant - Codelab seance Page d&#39;accueil (liste des depenses)</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="expenses-home-depenses-session"
+                  title="Flutter debutant - Codelab seance Page d&#39;accueil (liste des depenses)"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Introduction" duration="3">
+        <p>Objectif de la seance:</p>
+<ul>
+<li>Creer une page d&#39;accueil &#34;Mes depenses&#34;.</li>
+<li>Afficher une liste de depenses mockees.</li>
+<li>Calculer et afficher le total.</li>
+<li>Naviguer depuis la page de connexion.</li>
+</ul>
+<p>Niveau:</p>
+<ul>
+<li>Debutant (explications simples, etape par etape).</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 1 - Preparer les fichiers" duration="5">
+        <h2 is-upgraded>Action</h2>
+<p>Creer le dossier:</p>
+<ul>
+<li><code>lib/accueil/</code></li>
+</ul>
+<p>Creer le fichier:</p>
+<ul>
+<li><code>lib/accueil/page_accueil_depenses.dart</code></li>
+</ul>
+<h2 is-upgraded>Verification</h2>
+<ul>
+<li>Le fichier existe dans l&#39;IDE.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi separer <code>authentification</code> et <code>accueil</code> en dossiers differents ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 2 - Ajouter les imports et le modele Depense" duration="10">
+        <h2 is-upgraded>Action</h2>
+<p>Dans <code>lib/accueil/page_accueil_depenses.dart</code>, colle ce bloc:</p>
+<pre><code language="language-dart" class="language-dart">import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_screenutil/flutter_screenutil.dart&#39;;
+
+// Modele simple pour representer une depense.
+class Depense {
+  const Depense({
+    required this.titre,
+    required this.categorie,
+    required this.montant,
+    required this.date,
+  });
+
+  final String titre;
+  final String categorie;
+  final double montant;
+  final String date;
+}
+</code></pre>
+<h2 is-upgraded>Explication</h2>
+<ul>
+<li>Une classe <code>Depense</code> regroupe les infos d&#39;une transaction.</li>
+<li><code>const</code> permet de creer des objets immuables.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>montant</code> est en <code>double</code> et pas en <code>String</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 3 - Creer la page d&#39;accueil &#43; donnees mockees" duration="12">
+        <h2 is-upgraded>Action</h2>
+<p>Ajoute ce bloc sous le modele:</p>
+<pre><code language="language-dart" class="language-dart">class PageAccueilDepenses extends StatelessWidget {
+  const PageAccueilDepenses({super.key});
+
+  // Donnees mockees pour la seance.
+  static const List&lt;Depense&gt; _depenses = &lt;Depense&gt;[
+    Depense(
+      titre: &#39;Courses alimentaires&#39;,
+      categorie: &#39;Alimentation&#39;,
+      montant: 45.90,
+      date: &#39;05/05/2026&#39;,
+    ),
+    Depense(
+      titre: &#39;Taxi&#39;,
+      categorie: &#39;Transport&#39;,
+      montant: 12.50,
+      date: &#39;04/05/2026&#39;,
+    ),
+    Depense(
+      titre: &#39;Recharge internet&#39;,
+      categorie: &#39;Abonnement&#39;,
+      montant: 20.00,
+      date: &#39;03/05/2026&#39;,
+    ),
+    Depense(
+      titre: &#39;Cafe coworking&#39;,
+      categorie: &#39;Loisirs&#39;,
+      montant: 6.75,
+      date: &#39;03/05/2026&#39;,
+    ),
+  ];
+</code></pre>
+<h2 is-upgraded>Explication</h2>
+<ul>
+<li>On utilise des donnees mockees pour apprendre l&#39;UI avant la base de donnees.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Que signifie <code>static const</code> pour <code>_depenses</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 4 - Calculer le total des depenses" duration="8">
+        <h2 is-upgraded>Action</h2>
+<p>Ajoute la methode <code>build</code> et le calcul du total:</p>
+<pre><code language="language-dart" class="language-dart">  @override
+  Widget build(BuildContext context) {
+    final double totalDepenses = _depenses.fold&lt;double&gt;(
+      0,
+      (double total, Depense depense) =&gt; total + depense.montant,
+    );
+</code></pre>
+<h2 is-upgraded>Explication</h2>
+<ul>
+<li><code>fold</code> parcourt la liste et additionne les montants.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Quelle est la valeur de depart dans <code>fold</code> ?</li>
+<li>Q2: Pourquoi on retourne <code>double</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 5 - Construire le Scaffold (AppBar &#43; ListView)" duration="12">
+        <h2 is-upgraded>Action</h2>
+<p>Toujours dans <code>build</code>, ajoute:</p>
+<pre><code language="language-dart" class="language-dart">    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          &#39;Mes depenses&#39;,
+          style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w700),
+        ),
+        centerTitle: true,
+      ),
+      body: ListView(
+        padding: EdgeInsets.all(16.w),
+        children: &lt;Widget&gt;[
+          // Carte resume (total du mois en cours).
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.indigo,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: &lt;Widget&gt;[
+                Text(
+                  &#39;Total depenses&#39;,
+                  style: TextStyle(color: Colors.white70, fontSize: 13.sp),
+                ),
+                SizedBox(height: 6.h),
+                Text(
+                  &#39;${totalDepenses.toStringAsFixed(2)} EUR&#39;,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 18.h),
+          Text(
+            &#39;Liste des transactions&#39;,
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
+          ),
+          SizedBox(height: 10.h),
+</code></pre>
+<h2 is-upgraded>Explication</h2>
+<ul>
+<li>Le haut de page affiche le resume.</li>
+<li>Puis on prepare la liste detaillee.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>ListView</code> est pratique ici ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 6 - Afficher chaque depense avec map()" duration="15">
+        <h2 is-upgraded>Action</h2>
+<p>Ajoute ce bloc dans les <code>children</code> apres <code>SizedBox(height: 10.h),</code>:</p>
+<pre><code language="language-dart" class="language-dart">          ..._depenses.map((Depense depense) {
+            return Card(
+              elevation: 1.5,
+              margin: EdgeInsets.only(bottom: 10.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.indigo.shade50,
+                  child: Icon(Icons.payments_outlined, color: Colors.indigo),
+                ),
+                title: Text(
+                  depense.titre,
+                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+                ),
+                subtitle: Text(
+                  &#39;${depense.categorie} • ${depense.date}&#39;,
+                  style: TextStyle(fontSize: 12.sp),
+                ),
+                trailing: Text(
+                  &#39;- ${depense.montant.toStringAsFixed(2)} EUR&#39;,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+}
+</code></pre>
+<h2 is-upgraded>Explication</h2>
+<ul>
+<li><code>map()</code> transforme chaque <code>Depense</code> en widget <code>Card</code>.</li>
+<li><code>...</code> (spread operator) injecte tous les widgets dans la liste.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: A quoi sert <code>...</code> devant <code>_depenses.map(...)</code> ?</li>
+<li>Q2: Difference entre <code>title</code>, <code>subtitle</code>, <code>trailing</code> dans <code>ListTile</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 7 - Relier Connexion -&gt; Accueil" duration="10">
+        <h2 is-upgraded>Action</h2>
+<p>Dans <code>lib/authentification/page_de_connexion.dart</code>:</p>
+<ol type="1">
+<li>ajoute l&#39;import:</li>
+</ol>
+<pre><code language="language-dart" class="language-dart">import &#39;package:expenses_management_project/accueil/page_accueil_depenses.dart&#39;;
+</code></pre>
+<ol type="1" start="2">
+<li>dans le bouton <code>Connexion</code>, remplace <code>onPressed</code> par:</li>
+</ol>
+<pre><code language="language-dart" class="language-dart">onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute&lt;void&gt;(
+      builder: (BuildContext context) =&gt; const PageAccueilDepenses(),
+    ),
+  );
+},
+</code></pre>
+<h2 is-upgraded>Explication</h2>
+<ul>
+<li>Au clic, on ouvre la page d&#39;accueil des depenses.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>Navigator.push</code> ici est suffisant pour la seance ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 8 - Test final de la seance" duration="8">
+        <h2 is-upgraded>Action</h2>
+<pre><code language="language-bash" class="language-bash">flutter analyze
+flutter run
+</code></pre>
+<h2 is-upgraded>Checklist</h2>
+<ul>
+<li>[ ] Le bouton <code>Connexion</code> ouvre la page <code>Mes depenses</code>.</li>
+<li>[ ] La carte du total est visible.</li>
+<li>[ ] La liste affiche au moins 4 depenses.</li>
+<li>[ ] Aucun overflow visuel.</li>
+</ul>
+<h2 is-upgraded>Quiz recap</h2>
+<ul>
+<li>Q1: Cite 3 widgets utilises pour afficher la liste.</li>
+<li>Q2: Cite 2 choses gerees par <code>ScreenUtil</code> dans cette page.</li>
+<li>Q3: Explique en une phrase <code>fold</code>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bonus (si temps)" duration="6">
+        <ol type="1">
+<li>Ajouter une 5eme depense dans la liste mockee.</li>
+<li>Changer la couleur de la categorie selon son nom.</li>
+<li>Ajouter une icone differente selon la categorie.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusion" duration="2">
+        <p>Tu as construit une vraie page d&#39;accueil de depenses:</p>
+<ul>
+<li>donnees mockees,</li>
+<li>total calcule,</li>
+<li>liste lisible,</li>
+<li>navigation depuis connexion.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

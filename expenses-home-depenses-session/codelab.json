@@ -1,0 +1,30 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-05-05T07:52:33Z",
+  "id": "expenses-home-depenses-session",
+  "duration": 91,
+  "title": "Flutter debutant - Codelab seance Page d'accueil (liste des depenses)",
+  "authors": "Formateur",
+  "summary": "Flutter debutant - Codelab page d’accueil depenses",
+  "source": "docs/codelabs/codelab_home_depenses.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "flutter",
+    "mobile",
+    "ui"
+  ],
+  "tags": [
+    "beginner",
+    "codelab",
+    "flutter",
+    "listview",
+    "screenutil"
+  ],
+  "url": "expenses-home-depenses-session"
+}
