@@ -1,0 +1,311 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Flutter debutant - Codelab seance Ajouter une depense (formulaire &#43; setState)</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="expenses-add-depense-formulaire-session"
+                  title="Flutter debutant - Codelab seance Ajouter une depense (formulaire &#43; setState)"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Introduction" duration="3">
+        <p>Objectif de la seance:</p>
+<ul>
+<li>Ajouter un formulaire pour creer une nouvelle depense.</li>
+<li>Mettre a jour la liste en direct avec <code>setState</code>.</li>
+<li>Recalculer automatiquement le total.</li>
+</ul>
+<p>Resultat attendu:</p>
+<ul>
+<li>L&#39;eleve peut ajouter une depense depuis l&#39;UI.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 1 - Transformer la page accueil en StatefulWidget" duration="8">
+        <h2 is-upgraded>Action</h2>
+<p>Dans <code>lib/accueil/page_accueil_depenses.dart</code>:</p>
+<ul>
+<li>Transformer <code>PageAccueilDepenses</code> de <code>StatelessWidget</code> vers <code>StatefulWidget</code>.</li>
+<li>Creer <code>_PageAccueilDepensesState</code>.</li>
+</ul>
+<h2 is-upgraded>Pourquoi</h2>
+<ul>
+<li>On doit modifier la liste pendant l&#39;execution (ajout de depense).</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>StatelessWidget</code> ne suffit plus ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 2 - Rendre la liste modifiable" duration="8">
+        <h2 is-upgraded>Action</h2>
+<ul>
+<li>Remplacer la liste <code>static const</code> par une liste mutable dans l&#39;etat:</li>
+</ul>
+<pre><code language="language-dart" class="language-dart">final List&lt;Depense&gt; _depenses = &lt;Depense&gt;[
+  // ... depenses de depart
+];
+</code></pre>
+<h2 is-upgraded>Pourquoi</h2>
+<ul>
+<li><code>const</code> empêche de modifier la liste.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Quelle est la difference entre une liste <code>const</code> et une liste mutable ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 3 - Ajouter un bouton &#43; dans l&#39;AppBar" duration="8">
+        <h2 is-upgraded>Action</h2>
+<p>Dans <code>AppBar</code>, ajouter:</p>
+<pre><code language="language-dart" class="language-dart">actions: &lt;Widget&gt;[
+  IconButton(
+    onPressed: _ouvrirFormulaireAjout,
+    icon: const Icon(Icons.add),
+    tooltip: &#39;Ajouter une depense&#39;,
+  ),
+],
+</code></pre>
+<h2 is-upgraded>Pourquoi</h2>
+<ul>
+<li>On ouvre le formulaire depuis le haut de page.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Ou se place un bouton d&#39;action global dans un <code>Scaffold</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 4 - Creer la methode d&#39;ouverture du formulaire" duration="15">
+        <h2 is-upgraded>Action</h2>
+<p>Dans <code>_PageAccueilDepensesState</code>, ajouter:</p>
+<pre><code language="language-dart" class="language-dart">void _ouvrirFormulaireAjout() {
+  final TextEditingController titreController = TextEditingController();
+  final TextEditingController categorieController = TextEditingController();
+  final TextEditingController montantController = TextEditingController();
+
+  showModalBottomSheet&lt;void&gt;(
+    context: context,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      return Padding(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 16,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: &lt;Widget&gt;[
+            TextField(
+              controller: titreController,
+              decoration: const InputDecoration(labelText: &#39;Titre&#39;),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: categorieController,
+              decoration: const InputDecoration(labelText: &#39;Categorie&#39;),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: montantController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(labelText: &#39;Montant&#39;),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _ajouterDepense(
+                    titre: titreController.text.trim(),
+                    categorie: categorieController.text.trim(),
+                    montantTexte: montantController.text.trim(),
+                  );
+                  Navigator.pop(context);
+                },
+                child: const Text(&#39;Valider&#39;),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+</code></pre>
+<h2 is-upgraded>Pourquoi</h2>
+<ul>
+<li><code>showModalBottomSheet</code> est simple pour un formulaire debutant.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi <code>isScrollControlled: true</code> est utile sur mobile ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 5 - Ajouter la logique 
+_ajouterDepense" duration="15">
+        <h2 is-upgraded>Action</h2>
+<p>Toujours dans <code>_PageAccueilDepensesState</code>, ajouter:</p>
+<pre><code language="language-dart" class="language-dart">void _ajouterDepense({
+  required String titre,
+  required String categorie,
+  required String montantTexte,
+}) {
+  final double? montant = double.tryParse(montantTexte.replaceAll(&#39;,&#39;, &#39;.&#39;));
+
+  if (titre.isEmpty || categorie.isEmpty || montant == null || montant &lt;= 0) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text(&#39;Veuillez remplir correctement le formulaire&#39;)),
+    );
+    return;
+  }
+
+  setState(() {
+    _depenses.insert(
+      0,
+      Depense(
+        titre: titre,
+        categorie: categorie,
+        montant: montant,
+        date: &#39;08/05/2026&#39;,
+      ),
+    );
+  });
+}
+</code></pre>
+<h2 is-upgraded>Pourquoi</h2>
+<ul>
+<li><code>setState</code> force le rafraichissement de la liste et du total.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Que se passe-t-il si on ajoute dans <code>_depenses</code> sans <code>setState</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 6 - Verifier le recalcul du total" duration="6">
+        <h2 is-upgraded>Action</h2>
+<ul>
+<li>Garder le calcul existant avec <code>fold</code> dans <code>build</code>.</li>
+<li>Ajouter une depense test via le formulaire.</li>
+</ul>
+<h2 is-upgraded>Verification</h2>
+<ul>
+<li>Le total augmente.</li>
+<li>La nouvelle depense apparait en haut de liste.</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Pourquoi le total change automatiquement apres ajout ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 7 - Amelioration visuelle (option rapide)" duration="8">
+        <h2 is-upgraded>Action</h2>
+<ul>
+<li>Vider les champs apres validation.</li>
+<li>Ajouter <code>TextInputAction.next</code> aux <code>TextField</code>.</li>
+<li>Ajouter un titre au bottom sheet (<code>Ajouter une depense</code>).</li>
+</ul>
+<h2 is-upgraded>Mini quiz</h2>
+<ul>
+<li>Q1: Quelle petite amelioration UI a le plus d&#39;impact pour debutant ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 8 - Test final de la seance" duration="8">
+        <h2 is-upgraded>Action</h2>
+<pre><code language="language-bash" class="language-bash">flutter analyze
+flutter run
+</code></pre>
+<h2 is-upgraded>Checklist</h2>
+<ul>
+<li>[ ] Le bouton + est visible.</li>
+<li>[ ] Le formulaire s&#39;ouvre.</li>
+<li>[ ] Les validations minimales fonctionnent.</li>
+<li>[ ] La depense s&#39;ajoute en haut de liste.</li>
+<li>[ ] Le total se met a jour.</li>
+</ul>
+<h2 is-upgraded>Quiz recap</h2>
+<ul>
+<li>Q1: Pourquoi la page est devenue <code>StatefulWidget</code> ?</li>
+<li>Q2: Quel est le role de <code>setState</code> dans cette seance ?</li>
+<li>Q3: Pourquoi utiliser <code>double.tryParse</code> ?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bonus (si temps)" duration="6">
+        <ol type="1">
+<li>Ajouter une suppression avec <code>Dismissible</code>.</li>
+<li>Ajouter un <code>DropdownButtonFormField</code> pour la categorie.</li>
+<li>Mettre la date du jour automatiquement.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusion" duration="2">
+        <p>L&#39;eleve sait maintenant:</p>
+<ul>
+<li>ouvrir un formulaire,</li>
+<li>valider des saisies,</li>
+<li>modifier une liste dans l&#39;etat,</li>
+<li>voir l&#39;UI se mettre a jour en direct.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

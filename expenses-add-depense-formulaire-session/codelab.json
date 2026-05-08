@@ -1,0 +1,30 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-05-08T08:09:43Z",
+  "id": "expenses-add-depense-formulaire-session",
+  "duration": 87,
+  "title": "Flutter debutant - Codelab seance Ajouter une depense (formulaire + setState)",
+  "authors": "Formateur",
+  "summary": "Flutter debutant - Ajouter une depense (formulaire + setState)",
+  "source": "docs/codelabs/codelab_add_depense_formulaire.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "flutter",
+    "mobile",
+    "ui"
+  ],
+  "tags": [
+    "beginner",
+    "flutter",
+    "formulaire",
+    "listview",
+    "setstate"
+  ],
+  "url": "expenses-add-depense-formulaire-session"
+}

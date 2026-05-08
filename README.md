@@ -11,6 +11,7 @@ Ce projet sert de support de formation Flutter pour debutant, avec une progressi
 - Codelab (Google format Markdown / `claat`): `docs/codelabs/codelab_auth_screens.md`
 - Codelab V2 (ultra guide + mini quiz): `docs/codelabs/codelab_auth_screens_v2.md`
 - Codelab seance accueil depenses: `docs/codelabs/codelab_home_depenses.md`
+- Codelab seance ajout depense (formulaire + setState): `docs/codelabs/codelab_add_depense_formulaire.md`
 
 ## Comment utiliser ce projet en formation
 
